@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+<body>
+    <main>
+        <div id="controls-row">
+            <div id="scale-selector">
+                <label for="scaleSelect">Pattern:</label>
+                <select id="scaleSelect">
+                    <option value="chromatic">Pattern 1</option>
+                    <option value="major">Pattern 2</option>
+                    <option value="minor">Pattern 3</option>
+                    <option value="pentatonic">Pattern 4</option>
+                    <option value="wholeTone">Pattern 5</option>
+                </select>
+            </div>
+            <div id="buttons-container"></div>
+        </div>
+        <div id="app-container">
+            <div id="row-2-container">
+                <div class="slider-column">
+                    <label for="fileInput1">Sound 1:</label>
+                    <input type="file" id="fileInput1" accept="audio/*">
+                    <div class="slider-group">
+                        <label>D</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.12" class="slider" id="delayTimeSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>R</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="pitchSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>O</label>
+                        <input type="range" min="0" max="4" step="0.1" value="0" class="slider" id="octaveSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>P</label>
+                        <input type="range" min="-1" max="1" step="0.01" value="0" class="slider" id="panSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>V</label>
+                        <input type="range" min="0" max="2" step="0.05" value="1" class="slider" id="volumeSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>Ff</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterFreqSlider1">
+                    </div>
+                    <div class="slider-group">
+                        <label>Fb</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterBandwidthSlider1">
+                    </div>
+                    <div class="speed-slider-group">
+                        <label>S</label>
+                        <input type="range" min="0.01" max="0.2" step="0.01" value="0.05" class="slider" id="speedSlider1">
+                    </div>
+                </div>
+                <div class="slider-column">
+                    <label for="fileInput2">Sound 2:</label>
+                    <input type="file" id="fileInput2" accept="audio/*">
+                    <div class="slider-group">
+                        <label>D</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.12" class="slider" id="delayTimeSlider2">
+                    </div>
+                     <div class="slider-group">
+                        <label>R</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="pitchSlider2">
+                    </div>
+                    <div class="slider-group">
+                         <label>O</label>
+                        <input type="range" min="0" max="4" step="0.1" value="0" class="slider" id="octaveSlider2">
+                    </div>
+                    <div class="slider-group">
+                        <label>P</label>
+                        <input type="range" min="-1" max="1" step="0.01" value="0" class="slider" id="panSlider2">
+                    </div>
+                    <div class="slider-group">
+                        <label>V</label>
+                        <input type="range" min="0" max="2" step="0.05" value="1" class="slider" id="volumeSlider2">
+                    </div>
+                    <div class="slider-group">
+                        <label>Ff</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterFreqSlider2">
+                    </div>
+                   <div class="slider-group">
+                        <label>Fb</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterBandwidthSlider2">
+                   </div>
+                    <div class="speed-slider-group">
+                        <label>S</label>
+                        <input type="range" min="0.01" max="0.2" step="0.01" value="0.05" class="slider" id="speedSlider2">
+                    </div>
+                </div>
+            </div>
+            <div id="row-3-container">
+                 <div class="slider-column">
+                    <label for="fileInput3">Sound 3:</label>
+                    <input type="file" id="fileInput3" accept="audio/*">
+                    <div class="slider-group">
+                        <label>D</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.12" class="slider" id="delayTimeSlider3">
+                    </div>
+                    <div class="slider-group">
+                        <label>R</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="pitchSlider3">
+                    </div>
+                    <div class="slider-group">
+                        <label>O</label>
+                        <input type="range" min="0" max="4" step="0.1" value="0" class="slider" id="octaveSlider3">
+                    </div>
+                     <div class="slider-group">
+                        <label>P</label>
+                        <input type="range" min="-1" max="1" step="0.01" value="0" class="slider" id="panSlider3">
+                    </div>
+                    <div class="slider-group">
+                        <label>V</label>
+                        <input type="range" min="0" max="2" step="0.05" value="1" class="slider" id="volumeSlider3">
+                    </div>
+                    <div class="slider-group">
+                        <label>Ff</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterFreqSlider3">
+                    </div>
+                    <div class="slider-group">
+                        <label>Fb</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterBandwidthSlider3">
+                    </div>
+                    <div class="speed-slider-group">
+                        <label>S</label>
+                        <input type="range" min="0.01" max="0.2" step="0.01" value="0.05" class="slider" id="speedSlider3">
+                    </div>
+                </div>
+                  <div class="slider-column">
+                    <label for="fileInput4">Sound 4:</label>
+                    <input type="file" id="fileInput4" accept="audio/*">
+                    <div class="slider-group">
+                        <label>D</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.12" class="slider" id="delayTimeSlider4">
+                    </div>
+                    <div class="slider-group">
+                        <label>R</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="pitchSlider4">
+                    </div>
+                    <div class="slider-group">
+                        <label>O</label>
+                         <input type="range" min="0" max="4" step="0.1" value="0" class="slider" id="octaveSlider4">
+                    </div>
+                   <div class="slider-group">
+                        <label>P</label>
+                        <input type="range" min="-1" max="1" step="0.01" value="0" class="slider" id="panSlider4">
+                    </div>
+                     <div class="slider-group">
+                        <label>V</label>
+                        <input type="range" min="0" max="2" step="0.05" value="1" class="slider" id="volumeSlider4">
+                    </div>
+                   <div class="slider-group">
+                        <label>Ff</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterFreqSlider4">
+                    </div>
+                    <div class="slider-group">
+                        <label>Fb</label>
+                        <input type="range" min="0.1" max="1" step="0.01" value="1" class="slider" id="filterBandwidthSlider4">
+                   </div>
+                    <div class="speed-slider-group">
+                        <label>S</label>
+                        <input type="range" min="0.01" max="0.2" step="0.01" value="0.05" class="slider" id="speedSlider4">
+                    </div>
+                </div>
+            </div>
+        </div>
+           <div id="tempo-slider-container">
+              <label for="globalTempoSlider">Tempo</label>
+              <input type="range" id="globalTempoSlider" min="60" max="200" value="120" step="1" class="slider">
+            </div>
+    </main>
+    <script src="sketch.js"></script>
+</body>
+</html>
