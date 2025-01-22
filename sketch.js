@@ -75,7 +75,15 @@ function preload() {
 function setup() {
     noCanvas(); // No canvas is needed
   background(25);
-    
+
+  // Add master limiter
+  masterLimiter = new p5.Compressor();
+  masterLimiter.attack(0.003);
+  masterLimiter.knee(30);
+  masterLimiter.ratio(12);
+  masterLimiter.threshold(-24);
+  masterLimiter.release(0.25);
+
   // Initialize sound files as empty p5.SoundFile objects
   sound1 = new p5.SoundFile();
   sound2 = new p5.SoundFile();
@@ -83,13 +91,13 @@ function setup() {
   sound4 = new p5.SoundFile();
 
   delay1 = new p5.Delay();
-  delay1.process(sound1, 0.12, 0.7, 2300);
+  delay1.process(sound1, 0.12, 0.5, 2300);
   delay2 = new p5.Delay();
-  delay2.process(sound2, 0.12, 0.7, 2300);
+  delay2.process(sound2, 0.12, 0.5, 2300);
   delay3 = new p5.Delay();
-  delay3.process(sound3, 0.12, 0.7, 2300);
+  delay3.process(sound3, 0.12, 0.5, 2300);
   delay4 = new p5.Delay();
-  delay4.process(sound4, 0.12, 0.7, 2300);
+  delay4.process(sound4, 0.12, 0.5, 2300);
 
   // Initialize the main recorder and set its input to the master output
   mainRecorder = new p5.SoundRecorder();
@@ -129,13 +137,13 @@ function setup() {
    filter3 = new p5.BandPass();
   filter4 = new p5.BandPass();
 
-    
+
     // Create filter cutoff sliders
     filterFreqSlider1 = document.getElementById('filterFreqSlider1');
     filterFreqSlider2 = document.getElementById('filterFreqSlider2');
     filterFreqSlider3 = document.getElementById('filterFreqSlider3');
     filterFreqSlider4 = document.getElementById('filterFreqSlider4');
-    
+
      // Create filter bandwidth sliders
     filterBandwidthSlider1 = document.getElementById('filterBandwidthSlider1');
     filterBandwidthSlider2 = document.getElementById('filterBandwidthSlider2');
@@ -174,14 +182,14 @@ function setup() {
     currentScale = event.target.value;
       updateSlidersForScale(currentScale);
   });
-    
+
        // Get speed slider elements from HTML
      speedSlider1 = document.getElementById('speedSlider1');
      speedSlider2 = document.getElementById('speedSlider2');
      speedSlider3 = document.getElementById('speedSlider3');
       speedSlider4 = document.getElementById('speedSlider4');
-      
-      
+
+
     speedSlider1.addEventListener('input', () => {
        currentSpeed1 = parseFloat(speedSlider1.value);
     });
@@ -201,7 +209,7 @@ function setup() {
             currentTempo = parseFloat(globalTempoSlider.value);
          });
 
-      
+
   // Get file input elements
   fileInput1 = document.getElementById("fileInput1");
   fileInput2 = document.getElementById("fileInput2");
@@ -219,7 +227,7 @@ function setup() {
     // Set the canvas as ready
     isCanvasReady = true;
 }
-    
+
 
 function togglePlay() {
     isPlaying = !isPlaying;
@@ -257,7 +265,7 @@ function gradualSlide(slider, target, speed) {
 }
 
 function adjustSound() {
-    
+
   if (sound1.isLoaded()) {
     sound1.rate(parseFloat(pitchSlider1.value) * pow(2, parseFloat(octaveSlider1.value)));
     sound1.amp(parseFloat(volumeSlider1.value));
@@ -311,12 +319,12 @@ function draw() {
     const tempoRatio = currentTempo / baseTempo;
     let autonomousTime = millis() * 0.002 * tempoRatio;
 
-    
+
       patternTimer += 1;
         const beatsPerMinute = currentTempo; // Use the global tempo
       const secondsPerBeat = 60 / beatsPerMinute;
       const timePerStep = secondsPerBeat * 1000;
-        
+
     if (patternTimer >= timePerStep * rhythmicPatterns[currentPatternIndex1][patternStep1] ) {
           patternStep1 = (patternStep1 + 1) % rhythmicPatterns[currentPatternIndex1].length;
          patternTimer = 0;
@@ -329,47 +337,47 @@ function draw() {
           if(patternStep2 == 0) {
             currentPatternIndex2 = floor(random(0, rhythmicPatterns.length));
         }
-        
+
        }
 
   if (autonomousMode) {
-      
+
       // Calculate target indexes within the scale array
       let pitchIndex1 = (currentNoteIndex1) % scales[currentScale].length;
       let octaveIndex1 = floor(map(sin(autonomousTime * 0.1 + random(-0.1, 0.1)), -1, 1, 0, octaveSteps.length-1));
         let autonomousPan = noise(autonomousTime * 0.3 + 2000) * 2 - 1;
         let filterTarget1 = map(sin(autonomousTime * 0.3+random(-0.1,0.1)),-1,1,0.1,1);
         let filterBandwidthTarget1 = map(cos(autonomousTime * 0.1+random(-0.1,0.1)),-1,1,0.1,1);
-       
+
        let targetPitch1 = scales[currentScale][pitchIndex1];
        let targetOctave1 = octaveSteps[octaveIndex1]
 
-      
+
        let pitchIndex2 = (currentNoteIndex2) % scales[currentScale].length;
       let octaveIndex2 = floor(map(cos(autonomousTime * 0.1 + random(-0.1, 0.1)), -1, 1, 0, octaveSteps.length-1));
          let filterTarget2 = map(sin(autonomousTime * 0.1+random(-0.1,0.1)),-1,1,0.1,1);
        let  filterBandwidthTarget2 = map(cos(autonomousTime * 0.2+random(-0.1,0.1)),-1,1,0.1,1);
         let targetPitch2 = scales[currentScale][pitchIndex2];
         let targetOctave2 = octaveSteps[octaveIndex2];
-     
 
-      
+
+
        let pitchIndex3 = (currentNoteIndex3) % scales[currentScale].length;
         let octaveIndex3 = floor(map(sin(autonomousTime * 0.1 + random(-0.1, 0.1)), -1, 1, 0, octaveSteps.length-1));
            let filterTarget3 = map(cos(autonomousTime * 0.2+random(-0.1,0.1)),-1,1,0.1,1);
        let  filterBandwidthTarget3 = map(sin(autonomousTime * 0.3+random(-0.1,0.1)),-1,1,0.1,1);
         let targetPitch3 = scales[currentScale][pitchIndex3];
         let targetOctave3 = octaveSteps[octaveIndex3];
-    
+
        let pitchIndex4 = (currentNoteIndex4) % scales[currentScale].length;
        let octaveIndex4 = floor(map(cos(autonomousTime * 0.1 + random(-0.1, 0.1)), -1, 1, 0, octaveSteps.length-1));
            let filterTarget4 = map(cos(autonomousTime * 0.3+random(-0.1,0.1)),-1,1,0.1,1);
        let  filterBandwidthTarget4 = map(sin(autonomousTime * 0.1+random(-0.1,0.1)),-1,1,0.1,1);
        let targetPitch4 = scales[currentScale][pitchIndex4];
         let targetOctave4 = octaveSteps[octaveIndex4];
-      
-     
-     
+
+
+
     gradualSlide(pitchSlider1, targetPitch1, currentSpeed1);
      gradualSlide(octaveSlider1, targetOctave1, currentSpeed1);
     gradualSlide(panSlider1, autonomousPan, currentSpeed1);
@@ -393,14 +401,14 @@ function draw() {
     gradualSlide(panSlider4, -autonomousPan, currentSpeed4);
           gradualSlide(filterFreqSlider4, filterTarget4, currentSpeed4);
           gradualSlide(filterBandwidthSlider4, filterBandwidthTarget4, currentSpeed4);
-      
+
        if (patternTimer == 0){
              currentNoteIndex1 =  (currentNoteIndex1+1)  % scales[currentScale].length;
              currentNoteIndex2 =  (currentNoteIndex2+2) % scales[currentScale].length;
            currentNoteIndex3 =  (currentNoteIndex3+3)  % scales[currentScale].length;
            currentNoteIndex4 =   (currentNoteIndex4+4) % scales[currentScale].length;
         }
-    
+
   }
 
   adjustSound(); // Call this function to adjust the sound whether in autonomous mode or manual mode
@@ -465,7 +473,7 @@ function handleFile(soundNumber, event) {
 }
 // Function to update slider ranges based on the selected scale
 function updateSlidersForScale(scale) {
-  
+
     // Update the slider values on each scale change
     for (let i = 1; i <= 4; i++) {
           const pitchSlider = document.getElementById(`pitchSlider${i}`);
